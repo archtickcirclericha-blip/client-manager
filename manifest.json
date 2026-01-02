@@ -19,7 +19,7 @@
     }
   ],
   "share_target": {
-    "action": "/client-manager/index.html",
+    "action": "https://script.google.com/macros/s/AKfycbywnoiUStp0WmWgDRCrxmYv-_U6OLn2ewPrm_EwTZJr1UjR4tdRMxBRK--kfwRzwBLH/exec",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
@@ -33,4 +33,5 @@
   }
 
 }
+
 
