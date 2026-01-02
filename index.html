@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<title>Client Manager</title>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <div class="app-header">
+  
+
+  <label class="switch">
+    <input type="checkbox" id="darkToggle">
+    <span class="slider"></span>
+  </label>
+</div>
+  <link rel="manifest" href="manifest.josn">
+  <style>
+   :root {
+    --primary: #2c3e50;
+    --accent: #1abc9c;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #2d3436;
+    --muted: #7f8c8d;
+    --border: #e0e0e0;
+  }
+
+  body.dark {
+    --primary: #ecf0f1;
+    --accent: #1abc9c;
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #ecf0f1;
+    --muted: #b2bec3;
+    --border: #2c2c2c;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text);
+  }
+
+  .container {
+    max-width: 480px;
+    margin: auto;
+    padding: 16px;
+  }
+  
+  .icon{
+	width: 18px;
+	height: 18px;
+	margin-right: 8px;
+	vertical-align: middle;
+	fill: currentColor;
+  }
+
+  .app-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+    color: var(--primary);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  .card h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+    color: var(--primary);
+  }
+
+  label {
+    font-size: 13px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  input, select {
+	background: var(--card);
+	color: var(--text);
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+  }
+
+  button.secondary {
+    background: var(--border);
+	color: var(--text);
+    color: var(--primary);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .result {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .result a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .divider {
+    height: 1px;
+    background: #eee;
+    margin: 12px 0;
+  }
+   .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 26px;
+    transition: 0.3s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  input:checked + .slider {
+    background-color: var(--accent);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+</style>
+</head>
+
+<body style="font-family:Arial;padding:20px;">
+  <div class="container">
+
+  <div class="app-title">Client Manager</div>
+
+  <!-- CREATE CLIENT -->
+  <div class="card">
+    <h3>
+		<svg class="icon" viewBox="0 0 24 24">
+		<path d="M12 5v14M5 12h14"/>
+		</svg>
+	Create New Client</h3>
+
+    <label>Client Name</label>
+    <input id="client" placeholder="Rishabh Bajpai">
+
+    <label>Project Location</label>
+    <input id="location" placeholder="Kanpur">
+
+    <button id="btn">Create Folder</button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <!-- SELECT CLIENT -->
+  <div class="card">
+    <h3><svg class="icon" viewBox="0 0 24 24">
+		<path d="M10 4l2 2h8v12H4V4z"/>
+	Select Client</h3>
+
+    <label>Client</label>
+    <select id="clientSelect">
+      <option>Loading clients…</option>
+    </select>
+
+    <input type="hidden" id="clientFolderId">
+  </div>
+
+  <!-- FILE UPLOAD -->
+  <div class="card">
+    <h3>
+		<svg class="icon" viewBox="0 0 24 24">
+		<path d="M5 17h14v2H5zM12 5l5 5h-3v4h-4v-4H7z/>
+	Upload File</h3>
+
+    <label>Target Folder</label>
+    <select id="targetFolder">
+      <option>01_Client Brief & Agreement</option>
+      <option>02_Design Drawings (FINAL ONLY)</option>
+      <option>03_3D & Renders</option>
+      <option>04_Budget & BOQ</option>
+      <option>05_Approvals</option>
+      <option>06_Execution Notes</option>
+    </select>
+
+    <label>Select File</label>
+    <input type="file" id="file">
+
+    <button id="uploadBtn">Upload File</button>
+
+    <div id="uploadResult" class="result"></div>
+  </div>
+
+	<div class="card">
+  <h3>🎤 Execution Notes (Voice)</h3>
+
+  <button id="recordBtn">Start Recording</button>
+
+  <p id="voiceStatus"></p>
+</div>
+  <!-- APPROVAL UPLOAD -->
+  <div class="card">
+    <h3>✅ Upload Approval Screenshot</h3>
+
+    <label>Select Screenshot</label>
+    <input type="file" id="approvalImage" accept="image/*">
+
+    <button id="approvalBtn" class="secondary">
+      Upload Approval
+    </button>
+
+    <div id="approvalResult" class="result"></div>
+  </div>
+
+</div>
+<script>
+	if("serviceWorker" in navigator){
+		navigator.serviceWorker.register("sw.js");
+	}
+</script>
+<script>
+let recognition;
+let listening = false;
+let noteBuffer = "";
+
+if ("webkitSpeechRecognition" in window) {
+  recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = "en-IN";
+
+  recognition.onresult = function (event) {
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      if(event.results[i].isFinal){
+		noteBuffer += event.results[i][0].transcript + " ";
+	  }
+    }
+  };
+  
+  recognition.onerror = function(e){
+	console.error("Speech error:",e.error);
+  };
+}
+
+document.getElementById("recordBtn").addEventListener("click", function () {
+  if (!recognition) {
+    alert("Voice not supported on this device");
+    return;
+  }
+
+  if (!listening) {
+	noteBuffer = "";
+    recognition.start();
+    listening = true;
+    this.innerText = "Stop Recording";
+	document.getElementById("voiceStatus").innerText = "Listening...";
+  } else {
+    recognition.stop();
+    listening = false;
+    this.innerText = "Start Recording";
+	if(noteBuffer.trim().length > 0){
+		saveExecutionNote(noteBuffer.trim());
+		document.getElementById("voiceStatus").innerText = "Saved at " + new Date().toLocaleTimeString();
+	} else{
+		document.getElementById("voiceStatus").innerText = "No speech detected";
+	}
+  }
+});
+function saveExecutionNote(text) {
+  const clientId = document.getElementById("clientSelect").value;
+  if (!clientId) return;
+
+  fetch("https://script.google.com/macros/s/AKfycbywnoiUStp0WmWgDRCrxmYv-_U6OLn2ewPrm_EwTZJr1UjR4tdRMxBRK--kfwRzwBLH/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body:
+      "action=executionNote" +
+      "&clientFolderId=" + encodeURIComponent(clientId) +
+      "&note=" + encodeURIComponent(text)
+  });
+
+  document.getElementById("voiceStatus").innerText =
+    "Saved at " + new Date().toLocaleTimeString();
+}
+</script>
+<script>
+document.getElementById("btn").addEventListener("click", function () {
+  var client = document.getElementById("client").value;
+  var location = document.getElementById("location").value;
+
+  var body = "action=createClient" +
+    "&clientName=" + encodeURIComponent(client) +
+    "&location=" + encodeURIComponent(location);
+
+  fetch("https://script.google.com/macros/s/AKfycbywnoiUStp0WmWgDRCrxmYv-_U6OLn2ewPrm_EwTZJr1UjR4tdRMxBRK--kfwRzwBLH/exec", {
+    method: "POST",
+    headers : {
+	"Content-Type" : "application/x-www-form-urlencoded"
+    },
+    body: body
+  })
+  .then(function(res) {
+    return res.json();
+  })
+  .then(function(data) {
+    var link =
+      '<a href="' + data.folderUrl + '" target="_blank">Open Client Folder</a>';
+    document.getElementById("result").innerHTML = link;
+  })
+  .catch(function(err) {
+    document.getElementById("result").innerText = err.toString();
+  });
+});
+</script>
+<script>
+document.getElementById("uploadBtn").addEventListener("click", function () {
+  var fileInput = document.getElementById("file");
+  if (!fileInput.files.length) {
+    alert("Select a file");
+    return;
+  }
+
+  var file = fileInput.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function () {
+    var base64Data = reader.result.split(",")[1];
+
+    fetch("https://script.google.com/macros/s/AKfycbywnoiUStp0WmWgDRCrxmYv-_U6OLn2ewPrm_EwTZJr1UjR4tdRMxBRK--kfwRzwBLH/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body:
+        "action=uploadFile" +
+        "&clientFolderId=" + encodeURIComponent(document.getElementById("clientFolderId").value) +
+        "&targetFolder=" + encodeURIComponent(document.getElementById("targetFolder").value) +
+        "&fileName=" + encodeURIComponent(file.name) +
+        "&mimeType=" + encodeURIComponent(file.type) +
+        "&fileData=" + encodeURIComponent(base64Data)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("uploadResult").innerHTML =
+          '<a href="' + data.fileUrl + '" target="_blank">Open Uploaded File</a>';
+      } else {
+        document.getElementById("uploadResult").innerText = data.error;
+      }
+    });
+  };
+
+  reader.readAsDataURL(file);
+});
+</script>
+<script>
+function loadClients() {
+  fetch("https://script.google.com/macros/s/AKfycbywnoiUStp0WmWgDRCrxmYv-_U6OLn2ewPrm_EwTZJr1UjR4tdRMxBRK--kfwRzwBLH/exec?action=listClients")
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var select = document.getElementById("clientSelect");
+      select.innerHTML = '<option value="">Select client</option>';
+
+      data.clients.forEach(function(c) {
+        var opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.name;
+        select.appendChild(opt);
+      });
+    });
+}
+
+document.getElementById("clientSelect").addEventListener("change", function () {
+  document.getElementById("clientFolderId").value = this.value;
+});
+
+loadClients();
+</script>
+<script>
+window.addEventListener("load", function () {
+  if (navigator.canShare && window.location.search === "") {
+    // no-op
+  }
+});
+</script>
+<script>
+if (window.location.method === "POST") {
+  console.log("Shared file received");
+}
+</script>
+<script>
+document.getElementById("approvalBtn").addEventListener("click", function () {
+  var file = document.getElementById("approvalImage").files[0];
+  var clientId = document.getElementById("approvalClient").value;
+
+  if (!file || !clientId) {
+    alert("Select client and image");
+    return;
+  }
+
+  var reader = new FileReader();
+  reader.onload = function () {
+    var base64 = reader.result.split(",")[1];
+
+    fetch("PASTE_WEB_APP_URL", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body:
+        "action=approval" +
+        "&clientFolderId=" + encodeURIComponent(clientId) +
+        "&fileData=" + encodeURIComponent(base64)
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("approvalResult").innerHTML =
+        '<a href="' + data.fileUrl + '" target="_blank">View Approval</a>';
+    });
+  };
+
+  reader.readAsDataURL(file);
+});
+const toggle = document.getElementById("darkToggle");
+
+// Load saved preference
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+  toggle.checked = true;
+}
+
+toggle.addEventListener("change", function () {
+  if (this.checked) {
+    document.body.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.body.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }
+});
+</script>
+</body>
+</html>
