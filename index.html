@@ -55,7 +55,7 @@
 	height: 18px;
 	margin-right: 8px;
 	vertical-align: middle;
-	fill: currentColor;
+	
   }
 
   .app-title {
@@ -202,11 +202,7 @@
 
   <!-- CREATE CLIENT -->
   <div class="card">
-    <h3>
-		<svg class="icon" viewBox="0 0 24 24">
-		<path d="M12 5v14M5 12h14"/>
-		</svg>
-	Create New Client</h3>
+    <h3>➕ Create New Client</h3>
 
     <label>Client Name</label>
     <input id="client" placeholder="Rishabh Bajpai">
@@ -221,9 +217,7 @@
 
   <!-- SELECT CLIENT -->
   <div class="card">
-    <h3><svg class="icon" viewBox="0 0 24 24">
-		<path d="M10 4l2 2h8v12H4V4z"/>
-	Select Client</h3>
+    <h3>📁 Select Client</h3>
 
     <label>Client</label>
     <select id="clientSelect">
@@ -235,10 +229,7 @@
 
   <!-- FILE UPLOAD -->
   <div class="card">
-    <h3>
-		<svg class="icon" viewBox="0 0 24 24">
-		<path d="M5 17h14v2H5zM12 5l5 5h-3v4h-4v-4H7z/>
-	Upload File</h3>
+    <h3>📤 Upload File</h3>
 
     <label>Target Folder</label>
     <select id="targetFolder">
@@ -280,11 +271,6 @@
   </div>
 
 </div>
-<script>
-	if("serviceWorker" in navigator){
-		navigator.serviceWorker.register("sw.js");
-	}
-</script>
 <script>
 let recognition;
 let listening = false;
