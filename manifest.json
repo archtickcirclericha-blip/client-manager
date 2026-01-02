@@ -1,10 +1,13 @@
 {
   "name": "Client Manager",
   "short_name": "ClientMgr",
-  "start_url": "/index.html",
+  "start_url": "/client-manager/index.html",
+  "scope": "/client-manager",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "display": "standalone",
   "share_target": {
-    "action": "/index.html",
+    "action": "/client-manager/index.html",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
@@ -16,4 +19,5 @@
       ]
     }
   }
+
 }
